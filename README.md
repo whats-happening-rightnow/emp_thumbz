@@ -111,7 +111,9 @@ Ignore the warning as modules are installed.  Definitely do not update PIP as it
 In command prompt (cmd), navigate to where you unzipped the app files, and type in these commands (one at a time):
 
 `python -m pip install numpy`
+
 `python -m pip install opencv-python`
+
 `python -m pip install Pillow`
 
 **Step 4 - Run it!**
