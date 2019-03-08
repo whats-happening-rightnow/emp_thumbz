@@ -18,3 +18,5 @@ Select the appropriate installer, you'll mostly likely use [64bit msi](https://w
 Just use the default installation options, but make sure python in added to Windows PATH.
 Verify python is installed by opening command prompt, and type `python --version`:
 ![](https://i.imgur.com/tgQH4vT.png)
+
+
