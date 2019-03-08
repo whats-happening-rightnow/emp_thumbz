@@ -98,3 +98,30 @@ leave this one alone, it dynamically calculates each thumbnail image size
 
 `thumb_height` :
 don't remember what this is used for, leave it alone
+
+`exclude_postfix` :
+this is an unused setting but dependent anyway, leave it alone
+
+**Step 3 - Install app dependencies**
+
+Ignore the warning as modules are installed.  Definitely do not update PIP as it's recommended, it'll cause some problems since this is on python 2.7:
+
+![](https://i.imgur.com/ATpfqaT.png)
+
+In command prompt (cmd), navigate to where you unzipped the app files, and type in these commands (one at a time):
+
+`python -m pip install numpy`
+`python -m pip install opencv-python`
+`python -m pip install Pillow`
+
+**Step 4 - Run it!**
+
+In command prompt (cmd), navigate to where you unzipped the app files, and type in this command to run the app:
+
+`python thumbs.py`
+
+It should looks like this:
+
+![](https://i.imgur.com/Gcjn23J.png)
+
+And contact sheets should be in the same location as the video files.
