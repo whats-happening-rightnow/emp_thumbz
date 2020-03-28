@@ -23,7 +23,7 @@ class file_info:
 		self.folder = os.sep.join(filename_arr[:-1])
 		self.excludefilereorg = fn.exclude_in_file_reorg(self.fullfilename)
 
-		self.isatroot = self.rootfolder == self.folder;
+		self.isatroot = self.rootfolder == self.folder
 
 		if self.isatroot: 
 			return
@@ -53,8 +53,6 @@ class vid_attribute:
 			if "." in str(self.fps) and ".0" not in str(self.fps) \
 			else str(int(self.fps))
 		self.frames = int(self.vid_cap.get(cv2.CAP_PROP_FRAME_COUNT))
-		self.totalthumbs = cf.thumbs_horizontal * cf.thumbs_vertical
-		self.frameinterval = int((self.frames * (1 - (cf.video_pad * 2))) / self.totalthumbs)
 		self.height = int(self.vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 		self.length = int(self.frames / self.vid_cap.get(cv2.CAP_PROP_FPS))
 		self.length_string = ""
@@ -62,6 +60,15 @@ class vid_attribute:
 		self.size_string = ""
 		self.startframe = int(self.frames * cf.video_pad)
 		self.width = int(self.vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+
+		#vertical video
+		if self.height > self.width:
+			cf.thumbs_vertical_new = int(cf.thumbs_vertical / 2)
+		else: 
+			cf.thumbs_vertical_new = cf.thumbs_vertical
+
+		self.totalthumbs = cf.thumbs_horizontal * cf.thumbs_vertical_new
+		self.frameinterval = int((self.frames * (1 - (cf.video_pad * 2))) / self.totalthumbs)
 
 		# self.length_string
 		m, s = divmod(self.length, 60)

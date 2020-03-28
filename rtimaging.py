@@ -26,6 +26,18 @@ def create_contact_sheet(file_info):
 		return
 
 	vid_attr = vid_attribute(file_info)
+	
+	# DO 360P DELETE HERE
+
+	if (vid_attr.height < 400 and cf.remove_lowres):
+
+	    vid_attr.vid_cap.release()
+	    cv2.destroyAllWindows()
+
+	    fs.delete_file(vid_attr.file_nfo.fullfilename)
+	    pr.print_(cs_filename, f" del {vid_attr.height}p", True)
+	    pr.print_("")
+	    return
 
 	header_height, thumb_height, template_image = img.create_image_template(file_info)
 	thumbs = cap.capture_thumbnails(vid_attr)
@@ -34,11 +46,11 @@ def create_contact_sheet(file_info):
 
 	counter = 0
 	thumbs_keys = list(thumbs.keys())
-	thumbnail_scale = (cf.thumb_height * 1.0) / thumbs[thumbs_keys[0]].shape[0]
+	# thumbnail_scale = (cf.thumb_height * 1.0) / thumbs[thumbs_keys[0]].shape[0]
 	x_offset = cf.thumb_spacing
 	y_offset = header_height
 
-	for y in range (1, cf.thumbs_vertical + 1):
+	for y in range (1, cf.thumbs_vertical_new + 1):
 
 		for x in range(1, cf.thumbs_horizontal + 1):
 
@@ -52,7 +64,12 @@ def create_contact_sheet(file_info):
 		x_offset = cf.thumb_spacing
 		y_offset += (cf.thumb_height + cf.thumb_spacing)
 
-	cv2.imwrite(cs_filename, template_image)
+	newdim = (
+		int(template_image.shape[1] * 0.6),
+		int(template_image.shape[0] * 0.6),
+	)
+	template_image = cv2.resize(template_image, newdim, interpolation = cv2.INTER_AREA)
+	cv2.imwrite(cs_filename, template_image, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 
 	pr.print_(cs_filename, "done", True)
 	pr.print_("")
@@ -68,7 +85,7 @@ def create_image_template(file_nfo):
 	im_header += int(cf.text_font_size * 1.5)	# first line
 	im_header += int(cf.text_font_size)			# second line
 	im_header += int(cf.thumb_spacing / 2)		# pad
-	im_height += ((thumb_height + cf.thumb_spacing) * cf.thumbs_vertical) + int(cf.thumb_spacing)	# all the thumbs
+	im_height += ((thumb_height + cf.thumb_spacing) * cf.thumbs_vertical_new) + int(cf.thumb_spacing)	# all the thumbs
 
 	im = Image.new('RGBA', (cf.width, im_header + im_height), cf.background_color)
 	draw = ImageDraw.Draw(im)
