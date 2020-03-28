@@ -13,6 +13,7 @@ import rtimaging as img
 import rtconfig as cf
 import rtprint as pr
 import rtvidcap as cap
+import time
 
 def create_contact_sheet(file_info):
 
@@ -27,8 +28,6 @@ def create_contact_sheet(file_info):
 
 	vid_attr = vid_attribute(file_info)
 	
-	# DO 360P DELETE HERE
-
 	if (vid_attr.height < 400 and cf.remove_lowres):
 
 	    vid_attr.vid_cap.release()
@@ -70,6 +69,8 @@ def create_contact_sheet(file_info):
 	)
 	template_image = cv2.resize(template_image, newdim, interpolation = cv2.INTER_AREA)
 	cv2.imwrite(cs_filename, template_image, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+
+	os.utime(cs_filename, (vid_attr.file_nfo.moddate, vid_attr.file_nfo.moddate))
 
 	pr.print_(cs_filename, "done", True)
 	pr.print_("")
@@ -140,3 +141,15 @@ def timecode_image(seconds):
 	time_code_background_image = np.zeros((107, 500, 3), np.uint8)
 	cv2.putText(time_code_background_image, timecode, (3, 90), cv2.FONT_HERSHEY_DUPLEX, 3.45, (255,255,255), 6, cv2.LINE_AA)
 	return time_code_background_image 
+
+def datetime_to_timestamp(dt):
+    return time.mktime(dt.timetuple()) + dt.microsecond/1e6
+
+def set_file_modification_time(filename, mtime):
+    """
+    Set the modification time of a given filename to the given mtime.
+    mtime must be a datetime object.
+    """
+    stat = os.stat(filename)
+    atime = stat.st_atime
+    os.utime(filename, (atime, datetime_to_timestamp(mtime)))

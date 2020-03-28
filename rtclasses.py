@@ -22,6 +22,7 @@ class file_info:
 		self.extension = fs.file_ext(fullpath); 
 		self.folder = os.sep.join(filename_arr[:-1])
 		self.excludefilereorg = fn.exclude_in_file_reorg(self.fullfilename)
+		self.moddate = os.path.getmtime(fullpath)
 
 		self.isatroot = self.rootfolder == self.folder
 
