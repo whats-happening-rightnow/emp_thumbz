@@ -14,6 +14,9 @@ if cf.debug: pr.print_("Debug mode is on\n\n")
 if (len(sys.argv) > 1):
 
 	in_path = str(sys.argv[1]).strip().replace('"', '')
+	
+	if (len(sys.argv) > 2 and sys.argv[2] == 'skip'):
+		cf.remove_lowres = False
 
 	if os.path.isdir(in_path):
 		cf.thumb_paths = [in_path]

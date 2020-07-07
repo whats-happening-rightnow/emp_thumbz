@@ -1,5 +1,6 @@
 import collections
 import sys
+import cv2
 
 import rtimaging as img
 import rtprint as pr
@@ -20,8 +21,17 @@ def capture_thumbnails(vid_attr):
 		success, frame = vid_attr.vid_cap.read()
 
 		if success:
+
+			thmb = img.overlay_timecode_on_thumbnail(int(frame_counter / vid_attr.fps), frame)
+
+			if (thmb.shape[1] + thmb.shape[0]) > 3000:
+				width = int(thmb.shape[1] * .3)
+				height = int(thmb.shape[0] * .3)
+				dsize = (width, height)
+				thmb = cv2.resize(thmb, dsize)
+
 			# overlay timecode
-			thumbs_dict[frame_counter] = img.overlay_timecode_on_thumbnail(int(frame_counter / vid_attr.fps), frame)
+			thumbs_dict[frame_counter] = thmb
 			# move frame location forward
 			frame_counter += vid_attr.frameinterval
 			# print progress
